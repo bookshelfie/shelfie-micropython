@@ -8,7 +8,7 @@ import neopixel, machine
 
 webrepl.start()
 
-ap_if = network.WLAN(network.STA_IF)
+ap_if = network.WLAN(network.AP_IF)
 if not ap_if.active():
     ap_if.active(True)
 
@@ -23,8 +23,9 @@ ap_if.config(essid=access_point["essid"], channel=access_point["channel"],
 sta_if = network.WLAN(network.STA_IF)
 if not sta_if.active():
     sta_if.active(True)
-
+    
 available_networks = sta_if.scan()
+
 with open("networks.json", "r") as f:
     network_data = json.load(f)
 for network in available_networks:
