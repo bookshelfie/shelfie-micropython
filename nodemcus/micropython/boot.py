@@ -38,7 +38,7 @@ with open("neopixels.json", "r") as f:
     neopixels = json.load(f)
 
 number_of_leds =  neopixels["number_of_leds"]
-np = neopixel.NeoPixel(machine.Pin(4), number_of_leds) 
+np = neopixel.NeoPixel(machine.Pin(neopixels["pin"]), number_of_leds) 
 for i in range(number_of_leds):
     np[i] = (0,0,0)
 np.write()
