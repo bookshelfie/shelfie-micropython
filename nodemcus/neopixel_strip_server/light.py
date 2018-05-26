@@ -1,3 +1,4 @@
+
 def das_blinken_lights():
     import time, neopixel, machine
     n = 16
@@ -18,8 +19,6 @@ def das_blinken_lights():
         for i in reversed(list(range(n))):
             np[i] = (0,0,0)
             np.write()
-        
-        
         
 def show_time(h,m,s, lumens=255):
     """16x = 12h
