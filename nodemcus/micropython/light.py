@@ -41,7 +41,7 @@ def show_time(h,m,s, lumens=255):
     np[s_pos] = (lumens,0,lumens)
     np.write()
 
-def test():
+def test_ring():
     import time
     for h in range(12):
         for m in range(60):
@@ -49,3 +49,39 @@ def test():
                 show_time(h+1,m+1,s+1,lumens=16)
                 time.sleep(0.025)
             print("The time is {}:{}".format(h,m))
+
+def test_strip():
+    import time
+    import machine, neopixel
+    n = 145
+    np = neopixel.NeoPixel(machine.Pin(2), n)
+    for j in range(255):
+        lumens = 128
+        for i in range(n):
+            np[i] = (lumens,lumens,0)
+            np.write()
+            time.sleep(0.1)
+        for i in range(n):
+            np[i] = (0,lumens,lumens)
+            np.write()
+            time.sleep(0.1)
+        for i in range(n):
+            np[i] = (lumens,0,lumens)
+            np.write()
+            time.sleep(0.1)
+        for i in reversed(list(range(n))):
+            np[i] = (0,0,0)
+            np.write()
+
+def tens():
+    import time
+    import machine, neopixel
+    n = 145
+    np = neopixel.NeoPixel(machine.Pin(2), n)
+    lumens = 128
+    for i in range(n):
+        if (i+1)%10 == 0 :
+            np[i] = (lumens,0,int(lumens/2))
+            np.write()
+            time.sleep(0.1)
+    
