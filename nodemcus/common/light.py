@@ -108,3 +108,56 @@ def light_up(leds):
     for rgb, led in leds:
         np[led] = rgb
     np.write()
+
+def locate(pos):
+    """Takes a book position and highlights it. Runs a trippy location
+    algorithm too."""
+    import time
+    import math
+    if isinstance(pos, float):
+        pos = str(pos)
+    col,row = pos.split(".")
+    row = int(row)
+    if ":" in col:
+        col_start, col_end = col.split(":")
+        col_start = int(col_start)
+        col_end = int(col_end)
+    else:
+        col_start = col_end = int(col)
+    number_of_neopixels = get_number_of_neopixels()
+    # run a bisection animation.
+    np = get_neopixel()
+    np.fill((0,0,0))
+    
+    for i in range(0,col_start):
+        for j in reversed(range(col_end, number_of_neopixels):
+            np[i] = (255,0,0)
+            np[j] = (255,0,0)
+            np.write()
+            time.sleep(0.025)
+    np[col_start:col_end] = (0,255,255)
+    np.write()
+    time.sleep(1)
+    np[col_start:col_end] = (255,255,255)
+    np.write()
+    time.sleep(1)
+    np.fill((0,0,0))
+    if row == 1:
+        np[col_start:col_end] = (128,0,255)
+    elif row == 2:
+        np[col_start:col_end] = (255,128,0)
+    elif row == 3:
+        np[col_start:col_end] = (0,128,255)
+    elif row == 4:
+        np[col_start:col_end] = (32,64,255)
+    else:
+        np[col_start:col_end] = (0,0,0)
+    np.write()
+
+def clear():
+    np = get_neopixel()
+    np.fill((0,0,0))
+        
+
+
+    
