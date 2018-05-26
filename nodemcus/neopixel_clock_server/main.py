@@ -52,22 +52,26 @@ def parse_req(myrequest):
 def exec_req(adr, param_dict):
     """Function to execute the request"""
     print("URL:", adr, param_dict)
-    if adr[1] == '':
-        
+    if adr[1] == 'show_time':
+        hour = int(param_dict["hour"])
+        minute = int(param_dict["minute"])
+        second = param_dict.get("second")
+        if second is not None:
+            second = int(second)
+        lumens = param_dict.get("lumens")
+        if lumens is not None:
+            lumens = 255
+        else:
+            lumens = int(lumens)
+        light.show_time(hour, minute, second, lumens)
+        return {'success': 'True'}
     elif adr[1] == "":
-        with open("identity.json", "r") as f:
-            identity = json.load(f)
         return """<html>
         <head>
-            <title>Temperature Monitor Page</title>
+            <title>Clock</title>
         </head>
         <body>
-            <b>Temperature: {} °C</b>
-            <br/>
-            <b>Humidity: {} %</b>
-            <br/>
-            <b>Location: {}</b>
-            <br/>
+            <b>Clock</b>
         </body>
         </html>""".format(d.temperature(), d.humidity(), identity["location"])
 
@@ -75,6 +79,8 @@ def exec_req(adr, param_dict):
     
 
 def main(micropython_optimize=False):
+    global CONTENT_JSON
+    global CONTENT_HTML
     s = socket.socket()
 
     # Binding to all interfaces - server will be accessible to other hosts!
@@ -117,7 +123,7 @@ def main(micropython_optimize=False):
         out = exec_req(url, param_dict)
         #out = "URL: {}, PARAM: {}".format(str(url), str(param_dict))
         if isinstance(out, dict):
-            response = CONTENT_JSON % out
+            response = CONTENT_JSON % (str(out).replace("'","\""))
         else:
             response = CONTENT_HTML % out
         client_stream.write(response)

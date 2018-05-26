@@ -1,8 +1,14 @@
+def get_number_of_neopixels():
+    import ujson as json
+    with open("neopixels.json", "r") as f:
+        neopixels = json.load(f)
+    return neopixels["number_of_leds"]
+
 def get_neopixel():
     import neopixel, machine
     import ujson as json
     with open("neopixels.json", "r") as f:
-    neopixels = json.load(f)
+        neopixels = json.load(f)
     number_of_leds =  neopixels["number_of_leds"]
     np = neopixel.NeoPixel(machine.Pin(neopixels["pin"]), number_of_leds) 
     return np
@@ -27,24 +33,25 @@ def das_blinken_lights():
             np[i] = (0,0,0)
             np.write()
        
-def show_time(h,m,s, lumens=255):
+def show_time(h,m,s=None, lumens=255):
     """16x = 12h
         16y = 60ms
     """
-    import neopixel, machine, math
-    n = 16
+    import math
+    n = get_number_of_neopixels()
     if h > 12:
         h -= 12 # for 24 hours.
     h_pos = math.ceil(n/12*h) - 1 - 8
     m_pos = math.ceil(n/60*m) - 1 - 8
-    s_pos = math.ceil(n/60*s) - 1 - 8
-    np = neopixel.NeoPixel(machine.Pin(2), n)
-    for i in range(n):
-        np[i] = (0,0,0)
-    np.write()
+    np = get_neopixel()
+    np.fill((0,0,0))
     np[h_pos] = (lumens,lumens,0)
+    if s is not None:
+        s_pos = math.ceil(n/60*s) - 1 - 8
+
     np[m_pos] = (0,lumens,lumens)
-    np[s_pos] = (lumens,0,lumens)
+    if s is not None:
+        np[s_pos] = (lumens,0,lumens)
     np.write()
 
 def test_ring():
