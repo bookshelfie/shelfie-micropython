@@ -1,9 +1,8 @@
 import requests
 import datetime
 
-import time
 
-while True:
+if __name__ == "__main__":
     d = datetime.datetime.now()
     if 6 <= d.hour <18:
         lumens = 255
@@ -20,4 +19,3 @@ while True:
                          "second": d.second, 
                          "lumens": lumens
                      })
-    time.sleep(10)
