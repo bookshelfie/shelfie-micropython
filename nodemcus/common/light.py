@@ -128,31 +128,42 @@ def locate(pos):
     # run a bisection animation.
     np = get_neopixel()
     np.fill((0,0,0))
+    np.write()
+    i = 0
+    j = number_of_neopixels - 1
+    while (i!= col_start) and (j != col_end):
+        np[i] = (255,0,0)
+        np[j] = (255,0,0)
+        np.write()
+        time.sleep(0.0125)
+        i += 1
+        j -=1
     
-    for i in range(0,col_start):
-        for j in reversed(range(col_end, number_of_neopixels):
-            np[i] = (255,0,0)
-            np[j] = (255,0,0)
-            np.write()
-            time.sleep(0.025)
-    np[col_start:col_end] = (0,255,255)
+    for i in range(col_start,col_end+1):
+        np[i] = (0,255,255)
+    np.write()
+    
+    time.sleep(1)
+    for i in range(col_start,col_end+1):
+        np[i] = (255,255,255)
     np.write()
     time.sleep(1)
-    np[col_start:col_end] = (255,255,255)
-    np.write()
-    time.sleep(1)
+    
     np.fill((0,0,0))
     if row == 1:
-        np[col_start:col_end] = (128,0,255)
+        color = (128,0,255)
     elif row == 2:
-        np[col_start:col_end] = (255,128,0)
+        color = (255,128,0)
     elif row == 3:
-        np[col_start:col_end] = (0,128,255)
+        color = (0,128,255)
     elif row == 4:
-        np[col_start:col_end] = (32,64,255)
+        color = (32,64,255)
     else:
-        np[col_start:col_end] = (0,0,0)
+        color = (0,0,0)
+    for i in range(col_start,col_end+1):
+        np[i] = color
     np.write()
+
 
 def clear():
     np = get_neopixel()
