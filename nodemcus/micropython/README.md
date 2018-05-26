@@ -1,3 +1,1 @@
-# SHELFIE
-
-API for Bookshelf lights.
+# Nodemcu Webserver for the lights.
