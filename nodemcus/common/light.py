@@ -131,13 +131,15 @@ def locate(pos):
     np.write()
     i = 0
     j = number_of_neopixels - 1
-    while (i!= col_start) and (j != col_end):
-        np[i] = (255,0,0)
-        np[j] = (255,0,0)
+    while (i<= col_start) or (j >= col_end):
+        if i<= col_start:
+            np[i] = (255,0,0)
+            i += 1
+        if j>= col_end:
+            np[j] = (255,0,0)
+            j -=1
         np.write()
         time.sleep(0.0125)
-        i += 1
-        j -=1
     
     for i in range(col_start,col_end+1):
         np[i] = (0,255,255)
@@ -168,7 +170,7 @@ def locate(pos):
 def clear():
     np = get_neopixel()
     np.fill((0,0,0))
-        
+    np.write()        
 
 
     
