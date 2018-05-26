@@ -1,1 +1,1 @@
-# Nodemcu Webserver for the lights.
+# Nodemcu Webserver for the neopixel lights strip.

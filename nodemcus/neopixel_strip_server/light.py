@@ -1,8 +1,15 @@
+def get_neopixel():
+    import neopixel, machine
+    import ujson as json
+    with open("neopixels.json", "r") as f:
+    neopixels = json.load(f)
+    number_of_leds =  neopixels["number_of_leds"]
+    np = neopixel.NeoPixel(machine.Pin(neopixels["pin"]), number_of_leds) 
+    return np
 
 def das_blinken_lights():
-    import time, neopixel, machine
-    n = 16
-    np = neopixel.NeoPixel(machine.Pin(2), n)
+    import time
+    np = get_neopixel()
     for j in range(255):
         for i in range(n):
             np[i] = (j,0,0)
@@ -19,7 +26,7 @@ def das_blinken_lights():
         for i in reversed(list(range(n))):
             np[i] = (0,0,0)
             np.write()
-        
+       
 def show_time(h,m,s, lumens=255):
     """16x = 12h
         16y = 60ms
@@ -72,7 +79,7 @@ def test_strip():
             np[i] = (0,0,0)
             np.write()
 
-def tens():
+def show_tenth_leds():
     import time
     import machine, neopixel
     n = 145
@@ -83,4 +90,14 @@ def tens():
             np[i] = (lumens,0,int(lumens/2))
             np.write()
             time.sleep(0.1)
+
+def light_up(leds):
+    """Pass a list of pairs of led positions and colours.
+    Like so:
     
+        >>> light_up([[1, (255,0,0)]])
+    """
+    np = get_neopixel()
+    for rgb, led in leds:
+        np[led] = rgb
+    np.write()

@@ -3,22 +3,9 @@
 #esp.osdebug(None)
 import gc, webrepl, network
 import ujson as json
-
-import neopixel, machine
+from light import get_neopixel
 
 webrepl.start()
-
-ap_if = network.WLAN(network.AP_IF)
-if not ap_if.active():
-    ap_if.active(True)
-
-# move this to config.json
-
-with open("accesspoint.json", "r") as f:
-    access_point = json.load(f)
-
-ap_if.config(essid=access_point["essid"], channel=access_point["channel"],
-            password=access_point["password"])
 
 sta_if = network.WLAN(network.STA_IF)
 if not sta_if.active():
@@ -34,12 +21,15 @@ for network in available_networks:
         sta_if.connect(network_name, network_data[network_name])
         break
 
-with open("neopixels.json", "r") as f:
-    neopixels = json.load(f)
-
-number_of_leds =  neopixels["number_of_leds"]
-np = neopixel.NeoPixel(machine.Pin(neopixels["pin"]), number_of_leds) 
-for i in range(number_of_leds):
-    np[i] = (0,0,0)
+np = get_neopixel()
+np.fill((0,0,0))
 np.write()
+
+# Disable access point.
+ap_if = network.WLAN(network.AP_IF)
+if ap_if.active():
+    ap_if.active(False)
+
+
+
 gc.collect()
