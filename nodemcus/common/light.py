@@ -1,12 +1,9 @@
-def get_number_of_neopixels():
-    import ujson as json
-    with open("neopixels.json", "r") as f:
-        neopixels = json.load(f)
-    return neopixels["number_of_leds"]
+import neopixel, machine
+import ujson as json
+import time
+import math
 
 def get_neopixel():
-    import neopixel, machine
-    import ujson as json
     with open("neopixels.json", "r") as f:
         neopixels = json.load(f)
     number_of_leds =  neopixels["number_of_leds"]
@@ -14,7 +11,6 @@ def get_neopixel():
     return np
 
 def das_blinken_lights():
-    import time
     np = get_neopixel()
     for j in range(255):
         for i in range(n):
@@ -37,13 +33,12 @@ def show_time(h,m,s=None, lumens=255):
     """16x = 12h
         16y = 60ms
     """
-    import math
-    n = get_number_of_neopixels()
+    np = get_neopixel()
+    n = np.n
     if h > 12:
         h -= 12 # for 24 hours.
     h_pos = math.ceil(n/12*h) - 1 - 8
     m_pos = math.ceil(n/60*m) - 1 - 8
-    np = get_neopixel()
     np.fill((0,0,0))
     np[h_pos] = (lumens,lumens,0)
     if s is not None:
@@ -55,7 +50,6 @@ def show_time(h,m,s=None, lumens=255):
     np.write()
 
 def test_ring():
-    import time
     for h in range(12):
         for m in range(60):
             for s in range(60):
@@ -64,8 +58,6 @@ def test_ring():
             print("The time is {}:{}".format(h,m))
 
 def test_strip():
-    import time
-    import machine, neopixel
     n = 145
     np = neopixel.NeoPixel(machine.Pin(2), n)
     for j in range(255):
@@ -87,8 +79,6 @@ def test_strip():
             np.write()
 
 def show_tenth_leds():
-    import time
-    import machine, neopixel
     n = 145
     np = neopixel.NeoPixel(machine.Pin(2), n)
     lumens = 128
@@ -112,8 +102,6 @@ def light_up(leds):
 def locate(pos):
     """Takes a book position and highlights it. Runs a trippy location
     algorithm too."""
-    import time
-    import math
     if isinstance(pos, float):
         pos = str(pos)
     col,row = pos.split(".")
@@ -124,9 +112,9 @@ def locate(pos):
         col_end = int(col_end)
     else:
         col_start = col_end = int(col)
-    number_of_neopixels = get_number_of_neopixels()
-    # run a bisection animation.
     np = get_neopixel()
+    number_of_neopixels = np.n
+    # run a bisection animation.
     np.fill((0,0,0))
     np.write()
     i = 0
@@ -172,5 +160,30 @@ def clear():
     np.fill((0,0,0))
     np.write()        
 
+def show_progress(progress, color=(255,255,255)):
+    np = get_neopixel()
+    if progress == 100:
+        pixels = np.n
+    else:
+        pixels = math.floor(progress*np.n/100)
+    np.fill((0,0,0))
+    for i in range(pixels):
+        np[i] = color
+    np.write()
 
-    
+def blink(color=(255,255,255), t=2):
+    np = get_neopixel()
+    np.fill((0,0,0))
+    np.write()
+    time.sleep(t)
+    np.fill(color)
+    np.write()    
+    time.sleep(t)
+    np.fill((0,0,0))
+    np.write()
+    time.sleep(t)
+    np.fill(color)
+    np.write()
+    time.sleep(t)
+    np.fill((0,0,0))
+    np.write()

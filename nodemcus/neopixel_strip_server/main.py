@@ -4,6 +4,8 @@ import usocket as socket
 import ujson as json
 import machine
 import dht
+import light
+import time
 
 CONTENT_JSON = b"""HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
@@ -52,64 +54,39 @@ def parse_req(myrequest):
 def exec_req(adr, param_dict):
     """Function to execute the request"""
     print("URL:", adr, param_dict)
-    if adr[1] == 'write':
-        try:
-            pinid = int(adr[2])
-            pin = machine.Pin(pinid, machine.Pin.OUT)
-        except:
-            return {"status": "Error"}
-        if adr[3] == 'on':
-            pin.on()
-            return {"status": "Pin {} is on".format(str(pinid))}
-        elif adr[3] == 'off':
-            pin.off()
-            return {"status": "Pin {} is off".format(str(pinid))}
-    elif adr[1] == 'read':
-        try:
-            pinid = int(adr[2])
-
-            if "pull" in param_dict.keys():
-                pull = param_dict["pull"]
-            else:
-                pull = None
-
-            if pull == "up":
-                pull = machine.Pin.PULL_UP
-            elif pull == "down":
-                pull = machine.Pin.PULL_DOWN
-            pin = machine.Pin(pinid, machine.Pin.IN, pull) #todo
-            return {"value": pin.value()}
-        except:
-            return {
-                "Status": "Error"
-                }
-    elif adr[1] == "measure":
-        try:
-            pinid = int(adr[2])
-            d = dht.DHT11(machine.Pin(pinid))
-            d.measure()
-            return {"temperature": d.temperature(),  "humidity": d.humidity()}
-        except:
-            return {"Status": "Error"}
-    elif adr[1] == "whoami":
-        with open("identity.json", "r") as f:
-            identity = json.load(f)
-        return identity
+    if adr[1] == 'locate':
+        light.locate(param_dict["locate"])
+        time.sleep(10)
+        light.clear()
+        return {'success': 'True'}
+    elif adr[1] == "blink":
+        if param_dict.get("blink") is not None:
+            light.blink(param_dict["blink"])
+        else:
+            light.blink()
+        return {'success': 'True'}
+    elif adr[1] == "clear":
+        light.clear()
+        return {'success': 'True'}
+    elif adr[1] == "show_progress":
+        light.show_progress(param_dict["value"])
+        return {'success': 'True'}
     elif adr[1] == "":
-        d = dht.DHT11(machine.Pin(3))
-        d.measure()
-        with open("identity.json", "r") as f:
-            identity = json.load(f)
-        return """<html><head><title>Temperature Monitor Page</title></head>
+        return """<html>
+        <head>
+            <title>Clock</title>
+        </head>
         <body>
-        <b>Temperature: {} °C</b><br/>
-        <b>Humidity: {} %</b><br/>
-        <b>Location: {}</b><br/></body></html>""".format(d.temperature(), d.humidity(), identity["location"])
+            <b>Clock</b>
+        </body>
+        </html>"""
 
     return {"Status": "No Action"}
     
 
 def main(micropython_optimize=False):
+    global CONTENT_JSON
+    global CONTENT_HTML
     s = socket.socket()
 
     # Binding to all interfaces - server will be accessible to other hosts!
@@ -152,7 +129,7 @@ def main(micropython_optimize=False):
         out = exec_req(url, param_dict)
         #out = "URL: {}, PARAM: {}".format(str(url), str(param_dict))
         if isinstance(out, dict):
-            response = CONTENT_JSON % out
+            response = CONTENT_JSON % (str(out).replace("'","\""))
         else:
             response = CONTENT_HTML % out
         client_stream.write(response)
