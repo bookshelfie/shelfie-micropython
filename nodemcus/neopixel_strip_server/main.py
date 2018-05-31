@@ -60,11 +60,11 @@ def exec_req(adr, param_dict):
         light.clear()
         return {'success': 'True'}
     elif adr[1] == "blink":
-        if param_dict.get("blink") is not None:
-            light.blink(param_dict["blink"])
+        if param_dict.get("color") is not None:
+            light.blink(param_dict["color"])
         else:
             light.blink()
-        return {'success': 'True'}
+        return {'success': 'True', "message": "Blinked {}".format(param_dict.get("color"))}
     elif adr[1] == "clear":
         light.clear()
         return {'success': 'True'}

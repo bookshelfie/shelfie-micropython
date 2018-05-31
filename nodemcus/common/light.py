@@ -158,7 +158,7 @@ def locate(pos):
 def clear():
     np = get_neopixel()
     np.fill((0,0,0))
-    np.write()        
+    np.write()
 
 def show_progress(progress, color=(255,255,255)):
     np = get_neopixel()
@@ -171,7 +171,13 @@ def show_progress(progress, color=(255,255,255)):
         np[i] = color
     np.write()
 
-def blink(color=(255,255,255), t=2):
+def blink(color=None, t=2):
+    if color is None:
+        color = (255,255,255)
+    elif isinstance(color,str):
+        color = eval(color)
+    print(color)
+    print(type(color))
     np = get_neopixel()
     np.fill((0,0,0))
     np.write()
