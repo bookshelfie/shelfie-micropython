@@ -4,8 +4,8 @@ import usocket as socket
 import ujson as json
 import machine
 import dht
-import light
 import time
+import light
 
 CONTENT_JSON = b"""HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
@@ -29,13 +29,13 @@ Response Body:
 %s
 """
 
-
 def parse_req(myrequest):
     """Function to pass the url and return the path"""
     myrequest = str(myrequest)
     items = myrequest.strip().split('\r\n')
     path = ""
     param_pairs = []
+    adr = ""
     for item in items:
         if 'GET' in item:
             adr = item.split()[1]
@@ -71,13 +71,19 @@ def exec_req(adr, param_dict):
     elif adr[1] == "show_progress":
         light.show_progress(param_dict["value"])
         return {'success': 'True'}
+    elif adr[1] == "toggle":
+        if param_dict.get("color") is not None:
+            light.change_state(param_dict["color"])
+        else:
+            light.change_state()
     elif adr[1] == "":
         return """<html>
         <head>
-            <title>Clock</title>
+            <title>Strip A</title>
         </head>
         <body>
-            <b>Clock</b>
+            <b>Strip</b>
+            <p><a href="/toggle">Click here to toggle</a></p>
         </body>
         </html>"""
 

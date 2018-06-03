@@ -159,6 +159,10 @@ def clear():
     np = get_neopixel()
     np.fill((0,0,0))
     np.write()
+    state = "OFF"
+    with open("state.json", "w") as buffer:
+        buffer.write(json.dumps({"state":"OFF"}))
+        
 
 def show_progress(progress, color=(255,255,255)):
     np = get_neopixel()
@@ -171,7 +175,7 @@ def show_progress(progress, color=(255,255,255)):
         np[i] = color
     np.write()
 
-def blink(color=None, t=2):
+def blink(color=None, t=0.2):
     if color is None:
         color = (255,255,255)
     elif isinstance(color,str):
@@ -193,3 +197,28 @@ def blink(color=None, t=2):
     time.sleep(t)
     np.fill((0,0,0))
     np.write()
+
+def change_state(color=None):
+    import os
+    if color is None:
+        color = (255,255,255)
+    elif isinstance(color,str):
+        color = eval(color)
+    state_file = "state.json"
+    if state_file in os.listdir():
+        with open(state_file, "r") as buffer:
+            state_json = json.load(buffer)
+        print(state_json)
+        state = state_json.get("state", "OFF")
+    else:
+        state = "OFF"
+    if state == "OFF":
+        print("Turning it on. Color: {}".format(color))
+        np = get_neopixel()
+        np.fill(color)
+        np.write()
+        with open("state.json", "w") as buffer:
+            buffer.write(json.dumps({"state":"ON"}))
+    else:
+        print("Turning it off")
+        clear()
