@@ -223,7 +223,7 @@ def change_state(color=None):
         print("Turning it off")
         clear()
     
-def snake(stop=None, reverse=False, lumens=128, length=5):
+def snake(stop=None, reverse=False, lumens=128, length=5, longpause=0.1, shortpause=0.01):
     """Snakes its way through the LEDs
     """
     import urandom
@@ -233,23 +233,21 @@ def snake(stop=None, reverse=False, lumens=128, length=5):
         if reverse:
             stop = 0
         else:
-            stop = np.n
+            stop = np.n-1
     if reverse:
-            path = reversed(range(stop-length, np.n))
+            path = reversed(range(stop, np.n))
     else:
-        if stop is None:
-            path = range(0, np.n+length)
-        else:
-            path = range(0, stop+length)
+        path = range(0, stop)
+    print(list(path))
     colors = []
     #for j in range(length):
         #colors.append((int(urandom.getrandbits(8)/(j+1)), int(urandom.getrandbits(8)/(j+1)), int(urandom.getrandbits(8)/(j+1))))
     colors = [
-        (int(lumens/6), int(lumens/6), 0),
-        (int(lumens/5), int(lumens/5), 0),
-        (int(lumens/4), int(lumens/4), 0),
-        (int(lumens/3), int(lumens/3), 0),
-        (int(lumens/2), int(lumens/2), 0)
+        (0, int(lumens/6), int(lumens/6/2)),
+        (0, int(lumens/5), int(lumens/5/2)),
+        (0, int(lumens/4), int(lumens/4/2)),
+        (0, int(lumens/3), int(lumens/3/2)),
+        (0, int(lumens/2), int(lumens/2/2))
     ]
     colors = list(reversed(colors))
     pointer_colors = [
@@ -266,33 +264,40 @@ def snake(stop=None, reverse=False, lumens=128, length=5):
         if not reverse:
             for j in range(length):
                 position = i-(j+1)
-                if (0 <= position < np.n):
+                if (0 <= position <= stop):
                     np[position] = colors[j]
+                
             np.write()
-            if 0<=i<(np.n-1):
+            if 0<=i<=(stop):
                 for c in pointer_colors:
                     np[i] = c
                     np.write()
-                    time.sleep(0.05)
+                    time.sleep(shortpause)
             else:
                 for c in pointer_colors:
-                    np[np.n-1] = c
+                    np[stop] = c
                     np.write()
-                    time.sleep(0.05)
+                    time.sleep(shortpause)
         else:
             for j in range(length):
                 position = (i+(j+1))
-                if (0 <= position < np.n):
-                    np[i+(j+1)] = colors[j]
+                if (0 <= position <= stop):
+                    np[position] = colors[j]
             np.write()
-            if 0<=i<np.n:
+            if 0<=i<stop:
                 for c in pointer_colors:
-                    np[i] = (0,lumens,lumens)
+                    np[i] = c
                     np.write()
-                    time.sleep(0.05)
+                    time.sleep(shortpause)
             else:
                 for c in pointer_colors:
-                    np[0] = c
-        time.sleep(0.1)
+                    np[stop] = c
+                    np.write()
+                    time.sleep(shortpause)
+        time.sleep(longpause)
+    for i in path[-5:-1]:
+        np[i] = (0,0,0)
+        np.write()
+        time.sleep(longpause)
 
 
