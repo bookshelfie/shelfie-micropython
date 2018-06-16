@@ -222,3 +222,77 @@ def change_state(color=None):
     else:
         print("Turning it off")
         clear()
+    
+def snake(stop=None, reverse=False, lumens=128, length=5):
+    """Snakes its way through the LEDs
+    """
+    import urandom
+
+    np = get_neopixel()
+    if stop is None:
+        if reverse:
+            stop = 0
+        else:
+            stop = np.n
+    if reverse:
+            path = reversed(range(stop-length, np.n))
+    else:
+        if stop is None:
+            path = range(0, np.n+length)
+        else:
+            path = range(0, stop+length)
+    colors = []
+    #for j in range(length):
+        #colors.append((int(urandom.getrandbits(8)/(j+1)), int(urandom.getrandbits(8)/(j+1)), int(urandom.getrandbits(8)/(j+1))))
+    colors = [
+        (int(lumens/6), int(lumens/6), 0),
+        (int(lumens/5), int(lumens/5), 0),
+        (int(lumens/4), int(lumens/4), 0),
+        (int(lumens/3), int(lumens/3), 0),
+        (int(lumens/2), int(lumens/2), 0)
+    ]
+    colors = list(reversed(colors))
+    pointer_colors = [
+        (0, 0, lumens),
+        (0, lumens, 0),
+        (lumens, 0, 0 ),
+        (lumens, 0, lumens),
+        (lumens, lumens, 0),
+        (0, lumens, lumens),
+        (lumens, lumens, lumens)
+    ]
+    for i in path:
+        np.fill((0,0,0))
+        if not reverse:
+            for j in range(length):
+                position = i-(j+1)
+                if (0 <= position < np.n):
+                    np[position] = colors[j]
+            np.write()
+            if 0<=i<(np.n-1):
+                for c in pointer_colors:
+                    np[i] = c
+                    np.write()
+                    time.sleep(0.05)
+            else:
+                for c in pointer_colors:
+                    np[np.n-1] = c
+                    np.write()
+                    time.sleep(0.05)
+        else:
+            for j in range(length):
+                position = (i+(j+1))
+                if (0 <= position < np.n):
+                    np[i+(j+1)] = colors[j]
+            np.write()
+            if 0<=i<np.n:
+                for c in pointer_colors:
+                    np[i] = (0,lumens,lumens)
+                    np.write()
+                    time.sleep(0.05)
+            else:
+                for c in pointer_colors:
+                    np[0] = c
+        time.sleep(0.1)
+
+
