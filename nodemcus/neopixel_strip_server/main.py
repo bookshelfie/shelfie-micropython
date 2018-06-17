@@ -76,6 +76,11 @@ def exec_req(adr, param_dict):
             light.change_state(param_dict["color"])
         else:
             light.change_state()
+    elif adr[1] == "snake":
+        if param_dict.get("reverse") is not None:
+            light.snake(reverse=param_dict.get("reverse"))
+        else:
+            light.snake()
     elif adr[1] == "":
         return """<html>
         <head>
