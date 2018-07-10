@@ -65,6 +65,10 @@ def exec_req(adr, param_dict):
             lumens = int(lumens)
         light.show_time(hour, minute, second, lumens)
         return {'success': 'True'}
+    elif adr[1] == "progress":
+        percentage = float(param_dict["percentage"])
+        color = param_dict.get("color",(255,255,255))
+        light.show_progress(percentage,color)
     elif adr[1] == "":
         return """<html>
         <head>

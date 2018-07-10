@@ -7,6 +7,7 @@ def get_neopixel():
     with open("neopixels.json", "r") as f:
         neopixels = json.load(f)
     number_of_leds =  neopixels["number_of_leds"]
+    print("Pin: {}, No: {}".format(neopixels["pin"], number_of_leds))
     np = neopixel.NeoPixel(machine.Pin(neopixels["pin"]), number_of_leds) 
     return np
 
@@ -164,12 +165,18 @@ def clear():
         buffer.write(json.dumps({"state":"OFF"}))
         
 
-def show_progress(progress, color=(255,255,255)):
+def show_progress(progress, color=None):
     np = get_neopixel()
     if progress == 100:
         pixels = np.n
     else:
         pixels = math.floor(progress*np.n/100)
+    if color is None:
+        color=(255,255,255)
+    elif isinstance(color,str):
+        color = eval(color)
+    elif isinstance(color,tuple) or isinstance(color,list):
+        color = color
     np.fill((0,0,0))
     for i in range(pixels):
         np[i] = color

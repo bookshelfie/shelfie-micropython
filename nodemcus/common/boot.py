@@ -2,10 +2,10 @@
 #import esp
 #esp.osdebug(None)
 import gc, webrepl, network
+webrepl.start()
 import ujson as json
 import light
 
-webrepl.start()
 
 sta_if = network.WLAN(network.STA_IF)
 if not sta_if.active():
@@ -19,7 +19,7 @@ with open("networks.json", "r") as f:
 # Disable access point.
 ap_if = network.WLAN(network.AP_IF)
 if ap_if.active():
-    ap_if.active(False)
+    ap_if.active(True)
 
 for network in available_networks:
     network_name = network[0].decode()
