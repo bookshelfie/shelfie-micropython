@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Snakes on a Bookshelf</title>
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white.css">
+        <link rel="stylesheet" href="static/libs/font-awesome/4.7.0/css/font-awesome.css">
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>Snakes On A Bookshelf</h3>
+                    <h6>What Can MicroPython Do?</h6>
+                    <img src="static/images/micropython.png" width=200 />
+                    <p style="font-size: 2rem">
+                        Vinay Keerthi <a href="https://github.com/vinay87" target="_blank"><i class="fa fa-github"></i></a>
+                        | <a href="mailto:Vinay.Keerthi@gkndriveline.com" target="_blank"><i class="fa fa-briefcase"></i></a>
+                        | <a href="mailto:ktvkvinaykeerthi@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a>
+                        | <a href="https://medium.com/@ktvkvinaykeerthi" target="_blank"><i class="fa fa-medium"></i></a>
+                        | <a href="https://twitter.com/vinay87" target="_blank"><i class="fa fa-twitter"></i>@vinay87</a>
+                    </p>
+                </section>
+                <section>
+                    <section>
+                        <h3>A Room Full of Books</h3>
+                        <p style="color:red">Disclaimer: <br/>My photography skills <i class="fa fa-frown-o"></i> suck.</p>
+                    </section>
+                    <section><img src="static/images/shelf/001.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/002.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/003.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/004.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/005.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/006.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/007.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/008.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/009.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/010.jpg" style="height: 35rem" alt=""></section>
+                    <section><img src="static/images/shelf/011.jpg" style="height: 35rem" alt=""></section>
+                </section>
+                <section>
+                    <section>
+                        <h6>MicroPython on the ESP8266 (nodemcu)</h6>
+                        <p style="font-size: 2rem"><a href="https://www.amazon.in/Lolin-NodeMCU-ESP8266-CP2102-Wireless/dp/B010O1G1ES/ref=sr_1_1?s=industrial&ie=UTF8&qid=1538761693&sr=1-1&keywords=nodemcu"><i class="fa fa-link"></i></a></p>
+                        <img src="static/images/nodemcu.jpg" style="height:25rem" />
+                    </section>
+                    <section>
+                            <img src="static/assets/nodemcu_temp.jpg" style="height: 25rem" />
+                    </section>
+                    <section>
+                        <p style="font-size: 2rem"><a href="https://www.amazon.in/UrbanAce-Waterproof-Pixel-WS2812B-Strip/dp/B0757RW8RJ/ref=sr_1_4?ie=UTF8&qid=1538762012&sr=8-4&keywords=ws2812b"><i class="fa fa-link"></i></a></p>
+
+                            <img src="static/images/ws2812b.jpg" style="height: 25rem" />
+                    </section>
+                    <section>
+                            <img src="static/images/ws2812b_01.jpg" style="height: 25rem" />
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h3>Finding A Book when you own <i>over 900</i> is a nightmare.</h3>
+                        <p class="fragment fade-in">
+                                Case in point: I own 2 copies of <i>So Long and Thanks for All the Fish.</i>
+                            </p>
+                        <p class="fragment">It takes forever to find a book you want.</p>
+                        <p class="fragment">So don't try to find it like a <b>n00b.</b></p>
+                    </section>
+                    <section>
+                        <h3>Pimp My Bookshelf With <i>dasblinkenlights</i></h3>
+                    </section>
+                    <section>
+                        <h6>Step 1: Hook me up, real trippy like, doc.</h6>
+                        <img src="static/assets/bookshelf_leds.jpg" style="height: 25rem" />
+                    </section>
+                    <section>
+                        <h6>Step 2: Hello, World!</h6>
+                        <!-- play hello.mp4 -->
+                        <iframe 
+                            width="860"
+                            height="520"
+                            data-src="https://www.youtube.com/embed/YBYUPO1rMCs?autoplay=1">
+                        </iframe>
+                    </section>
+                    <section>
+                        <h6>Step 3: How long does this take?</h6>
+                        <!-- play progress.mp4 -->
+                        <iframe 
+                            width="860"
+                            height="520"
+                            data-src="https://www.youtube.com/embed/wXwPv_sYSIg?autoplay=1">
+                        </iframe>
+                    </section>
+                    <section>
+                        <h6>Step 3: <i>Finally!</i></h6>
+                        <!-- play voila.mp4 -->
+                        <iframe 
+                            width="860"
+                            height="520"
+                            data-src="https://www.youtube.com/embed/Gjc9Y9n9Y_I?autoplay=1">
+                        </iframe>
+                    </section>
+                    <section>
+                        <h6 class="color: red">Shelfie: The Inventory Search Engine</h6>
+                        <p style="font-size: 2rem">Shelfie is powered by: (Micro)python, NodeMCU, CouchDB, Raspberry Pi (one 3b, and 2 zero-ws), Flask, RabbitMQ and the WS2812b LED strips.
+                        </p>
+                        <p class="fragment" style="font-size: 2rem">The future: <span class="fragment fade-in">"Alexa, show me all the books I've read at least once in the last year."</span> <i class="fragment">or</i> <span class="fragment fade-in">"Alexa, what do I read next?"</span></p> 
+                    </section>
+                    <section>
+                        <h1>So Long and Thanks for all the Fish!</h1>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+            });
+        </script>
+    </body>
+</html>
