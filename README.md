@@ -165,6 +165,8 @@ Here is a sample file with all *required* config values.
             "pink": [255, 192, 203],
             "cyan": [0, 255, 255],
             "magenta": [255, 0, 255],
+            "white": [255, 255, 255],
+            "black": [0, 0, 0],
             "1": [128, 0, 255],
             "2": [255,128,0],
             "3": [0,128,255],
