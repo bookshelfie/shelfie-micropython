@@ -1,7 +1,6 @@
 """Config reader
 Example config:
 
-
 {
     "meta":{
         "label": "a",
