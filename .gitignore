@@ -105,3 +105,6 @@ ENV/
 # vim backups
 .swp
 .swo
+
+.vscode
+*.bin
