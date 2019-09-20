@@ -34,9 +34,10 @@ def locate(positions, color):
         start = end = positions
     start, end, row = int(start), int(end), int(row)
     light.locate(start, end, row)
-    time.sleep(config.lights.hold_time)
+    print("holding lights for a while.")
+    time.sleep(config.lights["hold_time"])
     light.clear()
-
+    print("clearing lights")
 
 def process_message(topic, message):
     """Processes message"""
@@ -57,12 +58,15 @@ def listen():
     client_id = "shelf_nodemcu_{label}".format(
             label=config.meta["label"])
     host = config.mqtt["host"]
+    port = config.mqtt["port"]
+    user = config.mqtt["username"]
+    password = config.mqtt["password"]
     client = MQTTClient(
         client_id,
         host,
-        #config.mqtt["port"],
-        #config.mqtt["username"],
-        #config.mqtt["password"]
+        port,
+        user,
+        password
     )
     print("Configuring callbacks")
     client.set_callback(process_message)
