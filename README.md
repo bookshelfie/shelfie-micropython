@@ -136,7 +136,7 @@ Here is a sample file with all *required* config values.
 
 {
     "meta":{
-        "label": "A",
+        "label": "a",
         "is_visible": true
     },
     "mqtt": {
@@ -146,8 +146,8 @@ Here is a sample file with all *required* config values.
         "password": "secure-password",
         "topics":
             {
-                "shelf": "SHELFIE/{label}",
-                "alert": "SHELFIE/ALERT"
+                "shelf": "shelfie/{label}",
+                "alert": "shelfie/alert"
             }
     },
     "lights": {
