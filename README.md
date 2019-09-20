@@ -154,6 +154,8 @@ Here is a sample file with all *required* config values.
         "hold_time": 10,
         "blink_gap": 0.5,
         "blink_times": 3,
+        "length": 100,
+        "pin": 2,
         "colors": {
             "red": [255, 0, 0],
             "blue": [0, 0, 255],
@@ -162,7 +164,11 @@ Here is a sample file with all *required* config values.
             "orange": [255, 165, 0],
             "pink": [255, 192, 203],
             "cyan": [0, 255, 255],
-            "magenta": [255, 0, 255]
+            "magenta": [255, 0, 255],
+            "1": [128, 0, 255],
+            "2": [255,128,0],
+            "3": [0,128,255],
+            "4": [32,64,255]
         }
     },
     "networks": [
