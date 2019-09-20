@@ -1,12 +1,11 @@
 """Common utilities for the ESP8266
 TODO: move this to a package."""
 
-import network
-import ujson as json
 
-
-def setup_network(config):
+def setup_network():
     """Sets up the network based on a config."""
+    import network
+    import config
     # turn on wifi connectivity.
     sta_if = network.WLAN(network.STA_IF)
     if not sta_if.active():
@@ -14,15 +13,17 @@ def setup_network(config):
 
     available_networks = sta_if.scan()
 
-    # Disable access point.
+    # Enable access point.
     ap_if = network.WLAN(network.AP_IF)
     if ap_if.active():
         ap_if.active(True)
 
-    network_data = config["networks"]
+    network_data = config.networks
 
     for network in available_networks:
         network_name = network[0].decode()
-        if network_name in network_data.keys():
-            sta_if.connect(network_name, network_data[network_name])
-            break
+        for network in network_data:
+            if network_name == network["ssid"]:
+                print("Connecting to {}".format(network_name))
+                sta_if.connect(network_name, network["password"])
+                break
