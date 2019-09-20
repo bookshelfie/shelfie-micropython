@@ -8,7 +8,7 @@ I've tested this code with ESP8266s controlling WS8212B Addressable RGB Strips.
 
 ## Demo
 
-![Demo Gif](docs/static/image/demo.gif)
+![Demo Gif](https://raw.githubusercontent.com/bookshelfie/shelfie-micropython/master/docs/static/images/mqtt-demo.gif)
 
 ## Deployment
 
