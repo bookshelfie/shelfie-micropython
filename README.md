@@ -130,7 +130,7 @@ These instructions should work on any Linux based system. I cannot confirm wheth
 The `config.json` file contains the main configuration. It should be populated
 before deploying the application.
 
-Here is a sample file with all available configs.
+Here is a sample file with all *required* config values.
 
 ```json
 
