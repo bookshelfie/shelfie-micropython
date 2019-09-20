@@ -1,6 +1,7 @@
 """Config reader
 Example config:
 
+
 {
     "meta":{
         "label": "a",
@@ -21,6 +22,8 @@ Example config:
         "hold_time": 10,
         "blink_gap": 0.5,
         "blink_times": 3,
+        "length": 100,
+        "pin": 2,
         "colors": {
             "red": [255, 0, 0],
             "blue": [0, 0, 255],
@@ -29,7 +32,11 @@ Example config:
             "orange": [255, 165, 0],
             "pink": [255, 192, 203],
             "cyan": [0, 255, 255],
-            "magenta": [255, 0, 255]
+            "magenta": [255, 0, 255],
+            "1": [128, 0, 255],
+            "2": [255,128,0],
+            "3": [0,128,255],
+            "4": [32,64,255]
         }
     },
     "networks": [
@@ -54,6 +61,10 @@ with open("config.json", "r") as f:
 
 networks = config["networks"]
 mqtt = config["mqtt"]
-lights = config["lights"]
 meta = config["meta"]
+# add the label to the shelf topic
 meta["topics"]["shelf"] = meta["topics"]["shelf"].format(label=meta["label"])
+# convert the color codes to tuples.
+lights = config["lights"]
+for key in lights["colors"].keys():
+    lights["colors"][key] = tuple(lights["colors"][key])
