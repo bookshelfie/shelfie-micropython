@@ -135,7 +135,7 @@ def locate(col_start, col_end, row):
         np[i] = config.lights["colors"]["white"]
     np.write()
     time.sleep(1)
-    np.fill(config.lights.colors["black"])
+    np.fill(config.lights["colors"]["black"])
     if row <= 4:
         color = config.lights["colors"][str(row)]
     else:
