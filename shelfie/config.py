@@ -59,10 +59,11 @@ with open("config.json", "r") as f:
     config = json.load(f)
 
 networks = config["networks"]
-mqtt = config["mqtt"]
 meta = config["meta"]
+
+mqtt = config["mqtt"]
+mqtt["topics"]["shelf"] = mqtt["topics"]["shelf"].format(label=meta["label"])
 # add the label to the shelf topic
-meta["topics"]["shelf"] = meta["topics"]["shelf"].format(label=meta["label"])
 # convert the color codes to tuples.
 lights = config["lights"]
 for key in lights["colors"].keys():
