@@ -3,15 +3,17 @@ import ujson as json
 import time
 import math
 
+import config
+
 def get_neopixel():
-    with open("neopixels.json", "r") as f:
-        neopixels = json.load(f)
-    number_of_leds =  neopixels["number_of_leds"]
-    print("Pin: {}, No: {}".format(neopixels["pin"], number_of_leds))
-    np = neopixel.NeoPixel(machine.Pin(neopixels["pin"]), number_of_leds) 
+    """Returns neopixel controller"""
+    pin = config.lights["pin"]
+    number_of_leds = config.lights["length"]
+    np = neopixel.NeoPixel(machine.Pin(pin), number_of_leds)
     return np
 
 def das_blinken_lights():
+    """Trippy blinkenlights"""
     np = get_neopixel()
     for j in range(255):
         for i in range(n):
@@ -29,9 +31,10 @@ def das_blinken_lights():
         for i in reversed(list(range(n))):
             np[i] = (0,0,0)
             np.write()
-       
+
 def show_time(h,m,s=None, lumens=255):
-    """16x = 12h
+    """Time function for the 16 node neopixel ring
+    16x = 12h
         16y = 60ms
     """
     np = get_neopixel()
@@ -51,6 +54,7 @@ def show_time(h,m,s=None, lumens=255):
     np.write()
 
 def test_ring():
+    """Function to test the neopixel ring"""
     for h in range(12):
         for m in range(60):
             for s in range(60):
@@ -59,8 +63,8 @@ def test_ring():
             print("The time is {}:{}".format(h,m))
 
 def test_strip():
-    n = 145
-    np = neopixel.NeoPixel(machine.Pin(2), n)
+    """Function to test the neopixel strip"""
+    np = get_neopixel()
     for j in range(255):
         lumens = 128
         for i in range(n):
@@ -79,9 +83,10 @@ def test_strip():
             np[i] = (0,0,0)
             np.write()
 
+
 def show_tenth_leds():
-    n = 145
-    np = neopixel.NeoPixel(machine.Pin(2), n)
+    """Marks the 10th LEDs of strip."""
+    np = get_neopixel()
     lumens = 128
     for i in range(n):
         if (i+1)%10 == 0 :
@@ -89,10 +94,11 @@ def show_tenth_leds():
             np.write()
             time.sleep(0.1)
 
+
 def light_up(leds):
     """Pass a list of pairs of led positions and colours.
     Like so:
-    
+
         >>> light_up([[1, (255,0,0)]])
     """
     np = get_neopixel()
@@ -100,19 +106,9 @@ def light_up(leds):
         np[led] = rgb
     np.write()
 
-def locate(pos):
-    """Takes a book position and highlights it. Runs a trippy location
-    algorithm too."""
-    if isinstance(pos, float):
-        pos = str(pos)
-    col,row = pos.split(".")
-    row = int(row)
-    if ":" in col:
-        col_start, col_end = col.split(":")
-        col_start = int(col_start)
-        col_end = int(col_end)
-    else:
-        col_start = col_end = int(col)
+def locate(col_start, col_end, row):
+    """Takes a book position and highlights it.
+    Runs a trippy location algorithm too."""
     np = get_neopixel()
     number_of_neopixels = np.n
     # run a bisection animation.
@@ -122,35 +118,28 @@ def locate(pos):
     j = number_of_neopixels - 1
     while (i<= col_start) or (j >= col_end):
         if i<= col_start:
-            np[i] = (255,0,0)
+            np[i] = config.lights["colors"]["red"]
             i += 1
         if j>= col_end:
-            np[j] = (255,0,0)
+            np[j] = config.lights["colors"]["red"]
             j -=1
         np.write()
         time.sleep(0.0125)
-    
+
     for i in range(col_start,col_end+1):
-        np[i] = (0,255,255)
+        np[i] = config.lights["colors"]["cyan"]
     np.write()
-    
+
     time.sleep(1)
     for i in range(col_start,col_end+1):
-        np[i] = (255,255,255)
+        np[i] = config.lights["colors"]["white"]
     np.write()
     time.sleep(1)
-    
-    np.fill((0,0,0))
-    if row == 1:
-        color = (128,0,255)
-    elif row == 2:
-        color = (255,128,0)
-    elif row == 3:
-        color = (0,128,255)
-    elif row == 4:
-        color = (32,64,255)
+    np.fill(config.lights.colors["black"])
+    if row <= 4:
+        color = config.lights["colors"][str(row)]
     else:
-        color = (0,0,0)
+        color = config.lights["colors"]["white"]
     for i in range(col_start,col_end+1):
         np[i] = color
     np.write()
@@ -163,7 +152,7 @@ def clear():
     state = "OFF"
     with open("state.json", "w") as buffer:
         buffer.write(json.dumps({"state":"OFF"}))
-        
+
 
 def show_progress(progress, color=None):
     np = get_neopixel()
@@ -183,29 +172,20 @@ def show_progress(progress, color=None):
     np.write()
 
 def blink(color=None, t=0.2):
+    """Blinks the strip"""
     if color is None:
         color = (255,255,255)
     elif isinstance(color,str):
         color = eval(color)
-    print(color)
-    print(type(color))
     np = get_neopixel()
-    np.fill((0,0,0))
-    np.write()
-    time.sleep(t)
-    np.fill(color)
-    np.write()    
-    time.sleep(t)
-    np.fill((0,0,0))
-    np.write()
-    time.sleep(t)
-    np.fill(color)
-    np.write()
-    time.sleep(t)
-    np.fill((0,0,0))
-    np.write()
+    for i in range(3):
+        np.fill((0,0,0) if i in [0,2] else color)
+        np.write()
+        time.sleep(t)
+
 
 def change_state(color=None):
+    """Toggles the state of the strip."""
     import os
     if color is None:
         color = (255,255,255)
@@ -229,10 +209,12 @@ def change_state(color=None):
     else:
         print("Turning it off")
         clear()
-    
-def snake(stop=None, reverse=False, lumens=128, length=5, longpause=0.1, shortpause=0.01):
-    """Snakes its way through the LEDs
-    """
+
+
+def snake(
+    stop=None, reverse=False, lumens=128,
+    length=5, longpause=0.1, shortpause=0.01):
+    """Snakes its way through the LEDs"""
     import urandom
 
     np = get_neopixel()
@@ -273,7 +255,7 @@ def snake(stop=None, reverse=False, lumens=128, length=5, longpause=0.1, shortpa
                 position = i-(j+1)
                 if (0 <= position <= stop):
                     np[position] = colors[j]
-                
+
             np.write()
             if 0<=i<=(stop):
                 for c in pointer_colors:
@@ -306,5 +288,3 @@ def snake(stop=None, reverse=False, lumens=128, length=5, longpause=0.1, shortpa
         np[i] = (0,0,0)
         np.write()
         time.sleep(longpause)
-
-
