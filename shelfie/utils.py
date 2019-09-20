@@ -19,8 +19,7 @@ def setup_network(config):
     if ap_if.active():
         ap_if.active(True)
 
-    with open(config, "r") as f:
-        network_data = json.load(f)["networks"]
+    network_data = config["networks"]
 
     for network in available_networks:
         network_name = network[0].decode()
