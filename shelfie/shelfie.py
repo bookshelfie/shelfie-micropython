@@ -2,7 +2,7 @@
 
 import ujson as json
 import time
-from umqtt.simple as MQTTClient
+from umqtt.simple import MQTTClient
 
 import light
 import config
@@ -10,7 +10,7 @@ import config
 
 def _type(topic):
     """Returns the topic type"""
-    for topic_type, topic_name in config.mqtt["topics"]:
+    for topic_type, topic_name in config.mqtt["topics"].items():
         if topic == topic_name:
             return topic_type
     return False
@@ -41,6 +41,7 @@ def locate(positions, color):
 def process_message(topic, message):
     """Processes message"""
     # TODO: convert the topic and message before using them.
+    print((topic, message))
     topic = topic.decode()
     message = json.loads(message.decode())
     if _type(topic) == "shelf":
@@ -53,23 +54,26 @@ def process_message(topic, message):
 
 def listen():
     """Function that initiates listening to the mqtt topics."""
-    client = MQTTCLient(
-        "shelf_nodemcu_{label}".format(
-            label=config.meta["label"]),
-        config.mqtt["host"],
-        config.mqtt["port"],
-        config.mqtt["username"],
-        config.mqtt["password"]
+    client_id = "shelf_nodemcu_{label}".format(
+            label=config.meta["label"])
+    host = config.mqtt["host"]
+    client = MQTTClient(
+        client_id,
+        host,
+        #config.mqtt["port"],
+        #config.mqtt["username"],
+        #config.mqtt["password"]
     )
+    print("Configuring callbacks")
     client.set_callback(process_message)
     client.connect()
-    for topic in config.mqtt["topic"].values():
+    for topic in config.mqtt["topics"].values():
         client.subscribe(bytes("{}".format(topic), "utf-8"))
-
+    print("listening...")
     while True:
         if True:
-            c.wait_msg() # blocking wait for message
+            client.wait_msg() # blocking wait for message
         else:
-            c.check_msg() # non-blocking wait for message
+            client.check_msg() # non-blocking wait for message
             time.sleep(1)
     client.disconnect()
