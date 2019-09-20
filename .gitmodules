@@ -1,0 +1,3 @@
+[submodule "webrepl"]
+	path = webrepl
+	url = git@github.com:stonecharioteer/webrepl.git
