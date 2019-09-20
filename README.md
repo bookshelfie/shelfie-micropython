@@ -6,6 +6,10 @@ LEDs on the neopixels.
 
 I've tested this code with ESP8266s controlling WS8212B Addressable RGB Strips.
 
+## Demo
+
+![Demo Gif](docs/static/image/demo.gif)
+
 ## Deployment
 
 These instructions should work on any Linux based system. I cannot confirm whether they work on a Mac.
