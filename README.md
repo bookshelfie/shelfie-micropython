@@ -135,14 +135,16 @@ Here is a sample file with all available configs.
 ```json
 
 {
-    wifi_ssid: "home-wifi",
-    wifi_password: "home-wifi-password",
     hotspot_ssid: "shelf-lights-01",
     hotspot_password: "shelf-lights-01-password",
     mosquitto_host: "mosquitto",
     mosquitto_username: "shelfie",
     mosquitto_password: "password",
-    hold_lights_time: 5
+    hold_lights_time: 5,
+    networks: {
+        "ssid1": "password1",
+        "ssid2": "password2"
+    }
 }
 ```
 
