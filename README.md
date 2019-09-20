@@ -135,24 +135,26 @@ Here is a sample file with all available configs.
 ```json
 
 {
-    label: "A",
-    is_visible: True,
-    mqtt: {
-        host: "mosquitto",
-        port: 1883,
-        username: "shelfie",
-        password: "secure-password",
-        topics:
+    "meta":{
+        "label": "A",
+        "is_visible": true
+    },
+    "mqtt": {
+        "host": "mosquitto",
+        "port": 1883,
+        "username": "shelfie",
+        "password": "secure-password",
+        "topics":
             {
                 "shelf": "SHELFIE/{label}",
                 "alert": "SHELFIE/ALERT"
             }
     },
-    lights: {
-        hold_time: 10,
-        blink_gap: 0.5,
-        blink_times: 3,
-        colors: {
+    "lights": {
+        "hold_time": 10,
+        "blink_gap": 0.5,
+        "blink_times": 3,
+        "colors": {
             "red": [255, 0, 0],
             "blue": [0, 0, 255],
             "green": [0, 255, 0],
@@ -163,14 +165,14 @@ Here is a sample file with all available configs.
             "magenta": [255, 0, 255]
         }
     },
-    networks: [
+    "networks": [
         {
-            ssid: "ssid1",
-            password: "password1"
+            "ssid": "ssid1",
+            "password": "password1"
         },
         {
-            ssid: "ssid2",
-            password: "password2"
+            "ssid": "ssid2",
+            "password": "password2"
         }
        ]
     }
