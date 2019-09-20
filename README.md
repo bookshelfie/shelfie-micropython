@@ -135,11 +135,19 @@ Here is a sample file with all available configs.
 ```json
 
 {
+    label: "A",
+    is_visible: True,
     mqtt: {
         host: "mosquitto",
         port: 1883,
         username: "shelfie",
         password: "secure-password",
+        topics:
+            {
+                "shelf": "SHELFIE/{label}",
+                "alert": "SHELFIE/ALERT"
+            }
+    },
     lights: {
         hold_time: 10,
         blink_gap: 0.5,
