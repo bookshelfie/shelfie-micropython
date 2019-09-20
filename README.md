@@ -135,15 +135,36 @@ Here is a sample file with all available configs.
 ```json
 
 {
-    hotspot_ssid: "shelf-lights-01",
-    hotspot_password: "shelf-lights-01-password",
-    mosquitto_host: "mosquitto",
-    mosquitto_username: "shelfie",
-    mosquitto_password: "password",
-    hold_lights_time: 5,
-    networks: {
-        "ssid1": "password1",
-        "ssid2": "password2"
+    mqtt: {
+        host: "mosquitto",
+        port: 1883,
+        username: "shelfie",
+        password: "secure-password",
+    lights: {
+        hold_time: 10,
+        blink_gap: 0.5,
+        blink_times: 3,
+        colors: {
+            "red": [255, 0, 0],
+            "blue": [0, 0, 255],
+            "green": [0, 255, 0],
+            "yellow": [255, 255, 0],
+            "orange": [255, 165, 0],
+            "pink": [255, 192, 203],
+            "cyan": [0, 255, 255],
+            "magenta": [255, 0, 255]
+        }
+    },
+    networks: [
+        {
+            ssid: "ssid1",
+            password: "password1"
+        },
+        {
+            ssid: "ssid2",
+            password: "password2"
+        }
+       ]
     }
 }
 ```
