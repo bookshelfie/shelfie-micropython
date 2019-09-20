@@ -173,16 +173,12 @@ Here is a sample file with all *required* config values.
     },
     "networks": [
         {
-            "ssid": "ssid1",
-            "password": "password1"
-        },
-        {
-            "ssid": "ssid2",
-            "password": "password2"
+            "ssid": "wifissid",
+            "password": "wifipassword"
         }
-       ]
-    }
+    ]
 }
+
 ```
 
 ## Development Notes
