@@ -10,6 +10,7 @@ def main(counter=0):
         shelfie.listen()
     except OSError:
         if counter <= 10:
+            print("Error... reconnecting...")
             main(counter+1)
         else:
             print("Rebooting system due to too many connection failures.")
