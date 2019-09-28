@@ -7,6 +7,7 @@ from umqtt.simple import MQTTClient
 import light
 import config
 
+__version__ = "0.1"
 
 def _type(topic):
     """Returns the topic type"""
