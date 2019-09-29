@@ -5,6 +5,12 @@ import math
 
 import config
 
+def test(pin, number, color):
+    n = neopixel.NeoPixel(machine.Pin(pin), number)
+    n.fill(color)
+    n.write()
+
+
 def get_neopixel():
     """Returns neopixel controller"""
     pin = config.lights["pin"]
@@ -88,7 +94,7 @@ def show_tenth_leds():
     """Marks the 10th LEDs of strip."""
     np = get_neopixel()
     lumens = 128
-    for i in range(n):
+    for i in range(np.n):
         if (i+1)%10 == 0 :
             np[i] = (lumens,0,int(lumens/2))
             np.write()
