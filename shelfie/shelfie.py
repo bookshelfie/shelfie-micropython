@@ -22,14 +22,13 @@ def alert(color, blink=True, times=2):
 
 
 
-def locate(positions, color):
+def locate(positions, color=None):
     """locates an item on the shelf"""
     if "." in positions:
         positions, row = positions.split(".")
     else:
         row = 1
     if ":" in positions:
-
         start, end = positions.split(":")
     else:
         start = end = positions
@@ -46,12 +45,13 @@ def process_message(topic, message):
     print((topic, message))
     topic = topic.decode()
     message = json.loads(message.decode())
-    if _type(topic) == "shelf":
+    topic_type = _type(topic)
+    if topic_type == "shelf":
         locate(**message)
-    elif _type(topic) == "alert":
+    elif topic_type == "alert":
         alert(**message)
-    else:
-        alert(config.lights["colors"]["red"],)
+    elif topic_type == "highlight":
+        light.show_tenth_leds()
 
 
 def listen():
