@@ -96,7 +96,7 @@ def show_tenth_leds():
 
 
 def show_nth_leds(n):
-    """Marks the nth LEDs of the strip"""s
+    """Marks the nth LEDs of the strip"""
     np = get_neopixel()
     lumens = 128
     for i in range(np.n):
