@@ -22,19 +22,19 @@ def das_blinken_lights():
     """Trippy blinkenlights"""
     np = get_neopixel()
     for j in range(255):
-        for i in range(n):
+        for i in range(np.n):
             np[i] = (j,0,0)
             np.write()
             time.sleep(0.1)
-        for i in range(n):
+        for i in range(np.n):
             np[i] = (0,j,0)
             np.write()
             time.sleep(0.1)
-        for i in range(n):
+        for i in range(np.n):
             np[i] = (0,0,j)
             np.write()
             time.sleep(0.1)
-        for i in reversed(list(range(n))):
+        for i in reversed(list(range(np.n))):
             np[i] = (0,0,0)
             np.write()
 
@@ -73,19 +73,19 @@ def test_strip():
     np = get_neopixel()
     for j in range(255):
         lumens = 128
-        for i in range(n):
+        for i in range(np.n):
             np[i] = (lumens,lumens,0)
             np.write()
             time.sleep(0.1)
-        for i in range(n):
+        for i in range(np.n):
             np[i] = (0,lumens,lumens)
             np.write()
             time.sleep(0.1)
-        for i in range(n):
+        for i in range(np.n):
             np[i] = (lumens,0,lumens)
             np.write()
             time.sleep(0.1)
-        for i in reversed(list(range(n))):
+        for i in reversed(list(range(np.n))):
             np[i] = (0,0,0)
             np.write()
 
