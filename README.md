@@ -71,20 +71,7 @@ These instructions should work on any Linux based system. I cannot confirm wheth
 3. You *should* be dropped into a micropython prompt. Try to print the zen of MicroPython by using the following command.
 
     ```python
-    >>> import this
-    The Zen of MicroPython
-
-    Code,
-    Hack it,
-    Less is more,
-    Keep it simple,
-    Small is beautiful,
-
-    Be brave! Break things! Learn and have fun!
-    Express yourself with MicroPython.
-
-    Happy hacking! :-)
-    ```
+    >>> import uos```
 
 4. Enable the [WebREPL](http://micropython.org/webrepl/). This enables us to transmit the files using the CLI.
 
@@ -128,7 +115,6 @@ These instructions should work on any Linux based system. I cannot confirm wheth
     >>> machine.reset()
     ```
 
-
 ## Configuration
 
 The `config.json` file contains the main configuration. It should be populated
@@ -151,7 +137,10 @@ Here is a sample file with all *required* config values.
         "topics":
             {
                 "shelf": "shelfie/{label}",
-                "alert": "shelfie/alert"
+                "alert": "shelfie/alert",
+                "highlight": "shelfie/highlight",
+                "progress": "shelfie/progress/{label}",
+                "clear": "shelfie/clear/{label}"
             }
     },
     "lights": {
@@ -187,8 +176,51 @@ Here is a sample file with all *required* config values.
 
 ```
 
+## Queues / Topics
+
+The current implementation accounts for 5 types of MQTT topics.
+
+1. `shelfie/{label}`
+
+This is the primary topic of note for this project. Each of the
+nodemcus listen to a topic named `shelfie/{label}`. They expect
+a message blob that contains the *position* of the book, denoted
+in one of the following ways: **m:n.x**, **m**, **m.x** or **m:n**.
+
+**m** denotes the starting LED of the book(s), **n** denotes the
+end. **x** denotes the row number. Some shelves have 4 rows, some
+have 2, and some others have 1.
+
+The various options are meant to be self-explanatory.
+
+2. `shelfie/alert/{label}`
+
+This is a general notification topic. The nodemcus listen to
+`shelfie/alert/{label}` so that alerts can be targetted.
+The message for alert requires an optional `kind`
+field, which can be one of the following: **info**, **warning**,
+**danger**, **debug**. Colors corresponding to these are stored
+in the config.json file.
+
+3. `shelfie/highlight/{label}`
+
+When shelfie receives a message on this topic, it will highlight the `nth` LEDs on the strip. `n` is an optional message parameter.
+
+4. `shelfie/progress/{label}`
+
+This topic uses the `progress` payload to show a live progress bar.
+
+5. `shelfie/clear/{label}`
+
+This topic clears the targetted LED strip.
+
+
 ## Development Notes
 
 ### Library
 
 This client utilizes the [`umqtt`](https://github.com/micropython/micropython-lib/tree/master/umqtt.simple) library from MicroPython. Do not rely on third-party extensions. See [here](https://github.com/micropython/micropython-lib/blob/master/umqtt.simple/example_pub.py) for a sample publisher and [here](https://github.com/micropython/micropython-lib/blob/master/umqtt.simple/example_sub.py) for a sample subscriber.
+
+
+Also, the `webrepl` is included as a submodule. Use `git clone --recurse-submodules` to get the entire submodule along with
+this repo.
