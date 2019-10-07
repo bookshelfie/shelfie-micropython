@@ -3,7 +3,7 @@ Example config:
 
 {
     "meta":{
-        "label": "a",
+        "label": "b",
         "is_visible": true
     },
     "mqtt": {
@@ -21,7 +21,7 @@ Example config:
         "hold_time": 10,
         "blink_gap": 0.5,
         "blink_times": 3,
-        "length": 100,
+        "length": 145,
         "pin": 2,
         "colors": {
             "red": [255, 0, 0],
@@ -60,9 +60,11 @@ with open("config.json", "r") as f:
 
 networks = config["networks"]
 meta = config["meta"]
-
 mqtt = config["mqtt"]
 mqtt["topics"]["shelf"] = mqtt["topics"]["shelf"].format(label=meta["label"])
+mqtt["topics"]["progress"] = [
+    topic.format(label=meta["label"]) for topic in mqtt["topics"]["progress"]
+    ]
 # add the label to the shelf topic
 # convert the color codes to tuples.
 lights = config["lights"]
