@@ -92,10 +92,15 @@ def test_strip():
 
 def show_tenth_leds():
     """Marks the 10th LEDs of strip."""
+    show_nth_leds(10)
+
+
+def show_nth_leds(n):
+    """Marks the nth LEDs of the strip"""s
     np = get_neopixel()
     lumens = 128
     for i in range(np.n):
-        if (i+1)%10 == 0 :
+        if (i+1)%n == 0 :
             np[i] = (lumens,0,int(lumens/2))
             np.write()
             time.sleep(0.1)
