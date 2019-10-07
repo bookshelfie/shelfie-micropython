@@ -1,0 +1,50 @@
+
+{
+    "meta":{
+        "label": "a",
+        "is_visible": true
+    },
+    "mqtt": {
+        "host": "mosquitto",
+        "port": 1883,
+        "username": "shelfie",
+        "password": "secure-password",
+        "topics":
+            {
+                "shelf": "shelfie/{label}",
+                "alert": "shelfie/alert",
+                "highlight": "shelfie/highlight",
+                "progress": "shelfie/progress/{label}",
+                "clear": "shelfie/clear/{label}"
+            }
+    },
+    "lights": {
+        "hold_time": 10,
+        "blink_gap": 0.5,
+        "blink_times": 3,
+        "length": 100,
+        "pin": 2,
+        "colors": {
+            "red": [255, 0, 0],
+            "blue": [0, 0, 255],
+            "green": [0, 255, 0],
+            "yellow": [255, 255, 0],
+            "orange": [255, 165, 0],
+            "pink": [255, 192, 203],
+            "cyan": [0, 255, 255],
+            "magenta": [255, 0, 255],
+            "white": [255, 255, 255],
+            "black": [0, 0, 0],
+            "1": [128, 0, 255],
+            "2": [255,128,0],
+            "3": [0,128,255],
+            "4": [32,64,255]
+        }
+    },
+    "networks": [
+        {
+            "ssid": "wifissid",
+            "password": "wifipassword"
+        }
+    ]
+}
