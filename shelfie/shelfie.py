@@ -13,16 +13,14 @@ __version__ = "0.2"
 def _type(topic):
     """Returns the topic type"""
     for topic_type, topic_string in config.mqtt["topics"].items():
-        if type(topic_string) == list:
-            if topic in topic_string:
-                return topic_type
-        elif topic == topic_string:
+        if topic == topic_string:
             return topic_type
     return False
 
 
 def alert(color, blink=True, times=config.lights["blink_times"]):
-    """general alert"""
+    """this function is called when one wants to use a general
+    notification."""
     np = light.get_neopixel()
     np.clear()
     counter = 1
@@ -97,6 +95,7 @@ def listen():
         client.subscribe(bytes("{}".format(topic), "utf-8"))
     print("listening...")
     while True:
+        # FIXME: Which do I use?
         if True:
             client.wait_msg() # blocking wait for message
         else:
