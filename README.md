@@ -204,7 +204,7 @@ in the config.json file.
 
 3. `shelfie/highlight/{label}`
 
-When shelfie receives a message on this topic, it will highlight the `nth` LEDs on the strip. `n` is an optional message parameter.
+When shelfie receives a message on this topic, it will highlight the `nth` LEDs on the strip. `steps` is an optional message parameter.
 
 4. `shelfie/progress/{label}`
 
