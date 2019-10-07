@@ -153,8 +153,6 @@ def change_state(color=None):
         clear()
 
 
-
-
 def das_blinken_lights():
     """Trippy blinkenlights"""
     np = get_neopixel()
