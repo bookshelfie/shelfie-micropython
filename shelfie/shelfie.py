@@ -1,28 +1,44 @@
 """shelfie core library"""
 
-import ujson as json
 import time
+import ujson as json
 from umqtt.simple import MQTTClient
 
 import light
 import config
 
-__version__ = "0.1"
+__version__ = "0.2"
+
 
 def _type(topic):
     """Returns the topic type"""
-    for topic_type, topic_name in config.mqtt["topics"].items():
-        if topic == topic_name:
+    for topic_type, topic_string in config.mqtt["topics"].items():
+        if type(topic_string) == list:
+            if topic in topic_string:
+                return topic_type
+        elif topic == topic_string:
             return topic_type
     return False
 
 
-def alert(color, blink=True, times=2):
+def alert(color, blink=True, times=config.lights["blink_times"]):
     """general alert"""
+    np = light.get_neopixel()
+    np.clear()
+    counter = 1
+    while counter <= times:
+        for i in range(np.n):
+            np[i] = color
+        np.write()
+        time.sleep(
+            config.lights["blink_gap"]
+            )
+        counter += 1
+        if not blink:
+            break
 
 
-
-def locate(positions, color=None):
+def locate(positions):
     """locates an item on the shelf"""
     if "." in positions:
         positions, row = positions.split(".")
@@ -39,6 +55,7 @@ def locate(positions, color=None):
     light.clear()
     print("clearing lights")
 
+
 def process_message(topic, message):
     """Processes message"""
     # TODO: convert the topic and message before using them.
@@ -51,7 +68,11 @@ def process_message(topic, message):
     elif topic_type == "alert":
         alert(**message)
     elif topic_type == "highlight":
-        light.show_tenth_leds()
+        n = message.get("n", 10)
+        light.show_nth_leds(n)
+    elif topic_type == "clear":
+        light.clear()
+        light.clear()
 
 
 def listen():
