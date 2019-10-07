@@ -5,7 +5,9 @@ import math
 
 import config
 
+
 def test(pin, number, color):
+    """Helper function to test the strip and the connectivity"""
     n = neopixel.NeoPixel(machine.Pin(pin), number)
     n.fill(color)
     n.write()
@@ -17,77 +19,6 @@ def get_neopixel():
     number_of_leds = config.lights["length"]
     np = neopixel.NeoPixel(machine.Pin(pin), number_of_leds)
     return np
-
-def das_blinken_lights():
-    """Trippy blinkenlights"""
-    np = get_neopixel()
-    for j in range(255):
-        for i in range(np.n):
-            np[i] = (j,0,0)
-            np.write()
-            time.sleep(0.1)
-        for i in range(np.n):
-            np[i] = (0,j,0)
-            np.write()
-            time.sleep(0.1)
-        for i in range(np.n):
-            np[i] = (0,0,j)
-            np.write()
-            time.sleep(0.1)
-        for i in reversed(list(range(np.n))):
-            np[i] = (0,0,0)
-            np.write()
-
-def show_time(h,m,s=None, lumens=255):
-    """Time function for the 16 node neopixel ring
-    16x = 12h
-        16y = 60ms
-    """
-    np = get_neopixel()
-    n = np.n
-    if h > 12:
-        h -= 12 # for 24 hours.
-    h_pos = math.ceil(n/12*h) - 1 - 8
-    m_pos = math.ceil(n/60*m) - 1 - 8
-    np.fill((0,0,0))
-    np[h_pos] = (lumens,lumens,0)
-    if s is not None:
-        s_pos = math.ceil(n/60*s) - 1 - 8
-
-    np[m_pos] = (0,lumens,lumens)
-    if s is not None:
-        np[s_pos] = (lumens,0,lumens)
-    np.write()
-
-def test_ring():
-    """Function to test the neopixel ring"""
-    for h in range(12):
-        for m in range(60):
-            for s in range(60):
-                show_time(h+1,m+1,s+1,lumens=16)
-                time.sleep(0.025)
-            print("The time is {}:{}".format(h,m))
-
-def test_strip():
-    """Function to test the neopixel strip"""
-    np = get_neopixel()
-    for j in range(255):
-        lumens = 128
-        for i in range(np.n):
-            np[i] = (lumens,lumens,0)
-            np.write()
-            time.sleep(0.1)
-        for i in range(np.n):
-            np[i] = (0,lumens,lumens)
-            np.write()
-            time.sleep(0.1)
-        for i in range(np.n):
-            np[i] = (lumens,0,lumens)
-            np.write()
-            time.sleep(0.1)
-        for i in reversed(list(range(np.n))):
-            np[i] = (0,0,0)
-            np.write()
 
 
 def show_tenth_leds():
@@ -109,13 +40,13 @@ def show_nth_leds(n):
 def light_up(leds):
     """Pass a list of pairs of led positions and colours.
     Like so:
-
         >>> light_up([[1, (255,0,0)]])
     """
     np = get_neopixel()
     for rgb, led in leds:
         np[led] = rgb
     np.write()
+
 
 def locate(col_start, col_end, row):
     """Takes a book position and highlights it.
@@ -140,8 +71,7 @@ def locate(col_start, col_end, row):
     for i in range(col_start,col_end+1):
         np[i] = config.lights["colors"]["cyan"]
     np.write()
-
-    time.sleep(1)
+    time.sleep(config.lights["blink_gap"])
     for i in range(col_start,col_end+1):
         np[i] = config.lights["colors"]["white"]
     np.write()
@@ -182,6 +112,7 @@ def show_progress(progress, color=None):
         np[i] = color
     np.write()
 
+
 def blink(color=None, t=0.2):
     """Blinks the strip"""
     if color is None:
@@ -220,6 +151,83 @@ def change_state(color=None):
     else:
         print("Turning it off")
         clear()
+
+
+
+
+def das_blinken_lights():
+    """Trippy blinkenlights"""
+    np = get_neopixel()
+    for j in range(255):
+        for i in range(np.n):
+            np[i] = (j,0,0)
+            np.write()
+            time.sleep(0.1)
+        for i in range(np.n):
+            np[i] = (0,j,0)
+            np.write()
+            time.sleep(0.1)
+        for i in range(np.n):
+            np[i] = (0,0,j)
+            np.write()
+            time.sleep(0.1)
+        for i in reversed(list(range(np.n))):
+            np[i] = (0,0,0)
+            np.write()
+
+
+def show_time(h,m,s=None, lumens=255):
+    """Time function for the 16 node neopixel ring
+    16x = 12h
+        16y = 60ms
+    """
+    np = get_neopixel()
+    n = np.n
+    if h > 12:
+        h -= 12 # for 24 hours.
+    h_pos = math.ceil(n/12*h) - 1 - 8
+    m_pos = math.ceil(n/60*m) - 1 - 8
+    np.fill((0,0,0))
+    np[h_pos] = (lumens,lumens,0)
+    if s is not None:
+        s_pos = math.ceil(n/60*s) - 1 - 8
+
+    np[m_pos] = (0,lumens,lumens)
+    if s is not None:
+        np[s_pos] = (lumens,0,lumens)
+    np.write()
+
+
+def test_ring():
+    """Function to test the neopixel ring"""
+    for h in range(12):
+        for m in range(60):
+            for s in range(60):
+                show_time(h+1,m+1,s+1,lumens=16)
+                time.sleep(0.025)
+            print("The time is {}:{}".format(h,m))
+
+
+def test_strip():
+    """Function to test the neopixel strip"""
+    np = get_neopixel()
+    for j in range(255):
+        lumens = 128
+        for i in range(np.n):
+            np[i] = (lumens,lumens,0)
+            np.write()
+            time.sleep(0.1)
+        for i in range(np.n):
+            np[i] = (0,lumens,lumens)
+            np.write()
+            time.sleep(0.1)
+        for i in range(np.n):
+            np[i] = (lumens,0,lumens)
+            np.write()
+            time.sleep(0.1)
+        for i in reversed(list(range(np.n))):
+            np[i] = (0,0,0)
+            np.write()
 
 
 def snake(
